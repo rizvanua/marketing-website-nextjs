@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { fetchCmsData } from "@/lib/mockCms";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import PageViewTracker from "@/components/PageViewTracker";
+import { FeatureGridSkeleton, CtaBannerSkeleton } from "@/components/blocks/BlockRenderer/BlockSkeleton";
 
 // ISR: Revalidate every 60 seconds
 export const revalidate = 60;
@@ -31,7 +32,16 @@ export default async function FeaturesPage() {
       <Suspense fallback={null}>
         <PageViewTracker path="/features" />
       </Suspense>
-      <BlockRenderer blocks={page.blocks} />
+      <Suspense
+        fallback={
+          <>
+            <FeatureGridSkeleton />
+            <CtaBannerSkeleton />
+          </>
+        }
+      >
+        <BlockRenderer blocks={page.blocks} />
+      </Suspense>
     </>
   );
 }

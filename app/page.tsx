@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { fetchCmsData } from "@/lib/mockCms";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import PageViewTracker from "@/components/PageViewTracker";
+import { BlockRendererSkeleton } from "@/components/blocks/BlockRenderer/BlockSkeleton";
 
 // Revalidate every 60 seconds
 export const revalidate = 60;
@@ -31,7 +32,9 @@ export default async function HomePage() {
       <Suspense fallback={null}>
         <PageViewTracker path="/" />
       </Suspense>
-      <BlockRenderer blocks={page.blocks} />
+      <Suspense fallback={<BlockRendererSkeleton />}>
+        <BlockRenderer blocks={page.blocks} />
+      </Suspense>
     </>
   );
 }
