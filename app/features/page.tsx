@@ -9,40 +9,61 @@ import { FeatureGridSkeleton, CtaBannerSkeleton } from "@/components/blocks/Bloc
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cmsData = await fetchCmsData();
-  const page = cmsData.pages.features;
+  try {
+    const cmsData = await fetchCmsData();
+    const page = cmsData?.pages?.features;
 
-  return {
-    title: page.seo.title,
-    description: page.seo.description || "Explore Guesty's automation, insights, and integrations.",
-    ...(page.seo.canonical && {
-      alternates: {
-        canonical: page.seo.canonical,
-      },
-    }),
-  };
+    if (!page) {
+      throw new Error("Features page data not found");
+    }
+
+    return {
+      title: page.seo?.title || "Guesty Features | Built for Property Managers",
+      description: page.seo?.description || "Explore Guesty's automation, insights, and integrations.",
+      ...(page.seo?.canonical && {
+        alternates: {
+          canonical: page.seo.canonical,
+        },
+      }),
+    };
+  } catch (error) {
+    console.error("Error generating metadata for features page:", error);
+    return {
+      title: "Guesty Features | Built for Property Managers",
+      description: "Explore Guesty's automation, insights, and integrations.",
+    };
+  }
 }
 
 export default async function FeaturesPage() {
-  const cmsData = await fetchCmsData();
-  const page = cmsData.pages.features;
+  try {
+    const cmsData = await fetchCmsData();
+    const page = cmsData?.pages?.features;
 
-  return (
-    <>
-      <Suspense fallback={null}>
-        <PageViewTracker path="/features" />
-      </Suspense>
-      <Suspense
-        fallback={
-          <>
-            <FeatureGridSkeleton />
-            <CtaBannerSkeleton />
-          </>
-        }
-      >
-        <BlockRenderer blocks={page.blocks} />
-      </Suspense>
-    </>
-  );
+    if (!page || !page.blocks || page.blocks.length === 0) {
+      throw new Error("Features page data or blocks not found");
+    }
+
+    return (
+      <>
+        <Suspense fallback={null}>
+          <PageViewTracker path="/features" />
+        </Suspense>
+        <Suspense
+          fallback={
+            <>
+              <FeatureGridSkeleton />
+              <CtaBannerSkeleton />
+            </>
+          }
+        >
+          <BlockRenderer blocks={page.blocks} />
+        </Suspense>
+      </>
+    );
+  } catch (error) {
+    console.error("Error rendering features page:", error);
+    throw error;
+  }
 }
 

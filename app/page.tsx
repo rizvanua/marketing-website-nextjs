@@ -9,23 +9,42 @@ import { BlockRendererSkeleton } from "@/components/blocks/BlockRenderer/BlockSk
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cmsData = await fetchCmsData();
-  const page = cmsData.pages.home;
+  try {
+    const cmsData = await fetchCmsData();
+    const page = cmsData?.pages?.home;
 
-  return {
-    title: page.seo.title,
-    description: page.seo.description || "Guesty helps property managers automate operations and grow their business.",
-    ...(page.seo.canonical && {
-      alternates: {
-        canonical: page.seo.canonical,
-      },
-    }),
-  };
+    if (!page) {
+      throw new Error("Home page data not found");
+    }
+
+    return {
+      title: page.seo?.title || "Guesty | Property Management Platform",
+      description:
+        page.seo?.description ||
+        "Guesty helps property managers automate operations and grow their business.",
+      ...(page.seo?.canonical && {
+        alternates: {
+          canonical: page.seo.canonical,
+        },
+      }),
+    };
+  } catch (error) {
+    console.error("Error generating metadata for homepage:", error);
+    return {
+      title: "Guesty | Property Management Platform",
+      description:
+        "Guesty helps property managers automate operations and grow their business.",
+    };
+  }
 }
 
 export default async function HomePage() {
   const cmsData = await fetchCmsData();
-  const page = cmsData.pages.home;
+  const page = cmsData?.pages?.home;
+
+  if (!page || !page.blocks || page.blocks.length === 0) {
+    return <div>Error: Home page data or blocks not found</div>;
+  }
 
   return (
     <>

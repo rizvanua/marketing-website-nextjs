@@ -7,9 +7,10 @@ import PageViewTracker from "@/components/PageViewTracker";
 // SSG: Static generation (no revalidate)
 // This page will be generated at build time
 
-export async function generateMetadata(): Promise<Metadata> {
-  const cmsData = await fetchCmsData();
-  const page = cmsData.pages.contact;
+export async function generateMetadata(): Promise<Metadata | undefined> {
+  try {
+    const cmsData = await fetchCmsData();
+    const page = cmsData.pages.contact;
 
   return {
     title: page.seo.title,
@@ -20,11 +21,21 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     }),
   };
+  } catch (error) {
+    console.error("Error generating metadata for contact page:", error);    
+  }
 }
 
+
+
 export default async function ContactPage() {
+  
   const cmsData = await fetchCmsData();
-  const page = cmsData.pages.contact;
+  const page = cmsData?.pages?.contact;
+
+  if (!page) {
+    return <div>Error: Failed to fetch CMS data</div>;
+  }
 
   return (
     <>

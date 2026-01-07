@@ -17,13 +17,23 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cmsData = await fetchCmsData();
+  let cmsData;
+  try {
+    cmsData = await fetchCmsData();
+  } catch (error) {
+    console.error("Failed to fetch CMS data in layout:", error);
+    cmsData = await fetchCmsData();
+  }
 
+  const siteData = cmsData?.site;
+  if(!siteData) {
+    return <div className="flex items-center justify-center h-screen">Error: Failed to fetch CMS data</div>;
+  }
   return (
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <LayoutWrapper siteData={cmsData.site}>{children}</LayoutWrapper>
+          <LayoutWrapper siteData={siteData}>{children}</LayoutWrapper>
         </ThemeRegistry>
       </body>
     </html>
