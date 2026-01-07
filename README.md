@@ -1,0 +1,134 @@
+# Guesty Marketing Website
+
+A Next.js marketing website built with TypeScript, Material UI, and mock CMS data. Demonstrates best practices for marketing sites with SEO, tracking, and CMS-driven content.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the site.
+
+## 📁 Project Structure
+
+```
+app/                    # Next.js App Router pages
+├── layout.tsx         # Root layout with header/footer
+├── page.tsx           # Homepage (ISR)
+├── features/          # Features page (ISR)
+├── contact/           # Contact page (SSG)
+└── ThemeRegistry.tsx  # MUI theme provider
+
+components/
+├── blocks/            # CMS block renderers
+│   ├── HeroBlock.tsx
+│   ├── FeatureGridBlock.tsx
+│   ├── TestimonialBlock.tsx
+│   ├── CtaBannerBlock.tsx
+│   └── BlockRenderer.tsx
+├── Header.tsx         # Navigation header
+├── Footer.tsx         # Site footer
+└── PageViewTracker.tsx # Analytics tracking
+
+lib/
+├── mockCms.ts         # Mock CMS data & types
+└── tracking.ts        # Analytics utilities
+```
+
+## 🏗️ Key Architectural Decisions
+
+### CMS-Driven Architecture
+
+All content is driven by mock CMS data (`lib/mockCms.ts`), separating content from presentation and making it easy to swap for a real headless CMS.
+
+### Block-Based Rendering
+
+The `BlockRenderer` component dynamically renders CMS blocks (Hero, FeatureGrid, Testimonial, CtaBanner) based on their type, with graceful handling of unknown block types.
+
+### Component Reuse
+
+- `BlockRenderer` used on Homepage and Features page
+- `TrackedButton` used in HeroBlock and CtaBannerBlock
+- `PageViewTracker` used on all pages
+- Header/Footer used globally via LayoutWrapper
+
+## 🔄 Rendering Strategy
+
+- **Homepage (`/`)** - ISR with 60s revalidation
+- **Features (`/features`)** - ISR with 60s revalidation
+- **Contact (`/contact`)** - SSG (static generation)
+
+ISR provides a balance between performance and content freshness. SSG is used for rarely-changing content.
+
+## 🔍 SEO & Accessibility
+
+- Dynamic metadata from CMS data via `generateMetadata()`
+- Semantic HTML (`<main>`, `<section>`, proper headings)
+- Keyboard navigation support
+- MUI components include built-in accessibility features
+
+## 📊 Tracking & Analytics
+
+The tracking system (`lib/tracking.ts`) currently logs to console. It's structured to easily integrate with:
+
+- **Google Tag Manager**: Push to `window.dataLayer`
+- **Google Analytics 4**: Call `window.gtag()`
+- **Mixpanel**: Use `mixpanel.track()`
+
+UTM parameters (utm_source, utm_medium, utm_campaign) are automatically extracted from URLs and included in all tracking events.
+
+## 🔌 Integration with Real CMS
+
+### WordPress (Headless)
+
+Replace `fetchCmsData()` in `lib/mockCms.ts`:
+
+```typescript
+export async function fetchCmsData(): Promise<CmsSiteData> {
+  const baseUrl = process.env.WORDPRESS_API_URL;
+  const response = await fetch(`${baseUrl}/wp-json/wp/v2/pages`);
+  return transformWordPressData(await response.json());
+}
+```
+
+### GraphQL
+
+```typescript
+export async function fetchCmsData(): Promise<CmsSiteData> {
+  const response = await fetch(process.env.GRAPHQL_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: '...' }),
+  });
+  return transformGraphQLResponse(await response.json());
+}
+```
+
+## 🎨 UI Library: Material UI
+
+MUI provides accessibility, responsive design, and theming out of the box. Theme is configured in `app/ThemeRegistry.tsx`.
+
+## 🚀 Future Improvements
+
+- Image optimization with Next.js Image component
+- Cookie-based UTM persistence
+- Open Graph and Twitter Card metadata
+- Structured data (JSON-LD)
+- Error boundaries and loading states
+- E2E testing with Playwright/Cypress
+- Internationalization support
+
+## 📝 Notes
+
+- Content is server-rendered and visible without JavaScript
+- Client components are only used where interactivity is needed (tracking, navigation)
+- The project follows Next.js 13+ App Router conventions
