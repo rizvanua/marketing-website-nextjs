@@ -161,6 +161,7 @@ MUI provides accessibility, responsive design, and theming out of the box. Theme
 - Error boundaries
 - E2E testing with Playwright/Cypress
 - Internationalization support
+- Improve mobile version navigation menu
 
 ## 🧪 Testing
 
