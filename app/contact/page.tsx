@@ -4,9 +4,6 @@ import { fetchCmsData } from "@/lib/mockCms";
 import { Container, Typography, Box, Paper, Link as MuiLink } from "@mui/material";
 import PageViewTracker from "@/components/PageViewTracker";
 
-// SSG: Static generation (no revalidate)
-// This page will be generated at build time
-
 export async function generateMetadata(): Promise<Metadata | undefined> {
   try {
     const cmsData = await fetchCmsData();

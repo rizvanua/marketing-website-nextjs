@@ -29,8 +29,6 @@ const theme = createTheme({
   },
 });
 
-// This implementation ensures proper SSR with Emotion
-// Using a ref to ensure the cache is stable across renders
 export default function ThemeRegistry({
   children,
 }: {

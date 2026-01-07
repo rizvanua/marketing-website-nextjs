@@ -24,7 +24,6 @@ export default function BlockRenderer({ blocks }: BlockRendererProps) {
           default:
             // Graceful handling of unknown block types
             if (typeof window === "undefined") {
-              // Server-side: log warning
               console.warn(`Unknown block type: ${(block as CmsBlock).type}`);
             }
             return null;
