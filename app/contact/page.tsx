@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: page.seo.title,
-    description: page.seo.description,
+    description: page.seo.description || "Get in touch with the Guesty team to learn more.",
     ...(page.seo.canonical && {
       alternates: {
         canonical: page.seo.canonical,

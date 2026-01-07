@@ -5,7 +5,10 @@ import { fetchCmsData } from "@/lib/mockCms";
 import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
-  title: "Guesty | Property Management Platform",
+  title: {
+    default: "Guesty | Property Management Platform",
+    template: "%s | Guesty",
+  },
   description: "Guesty helps property managers automate operations and grow their business.",
 };
 

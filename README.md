@@ -37,13 +37,16 @@ app/                    # Next.js App Router pages
 
 components/
 ├── blocks/            # CMS block renderers
-│   ├── HeroBlock.tsx
+│   ├── HeroBlock/
+│   │   ├── index.tsx
+│   │   └── HeroBlock.spec.tsx
 │   ├── FeatureGridBlock.tsx
 │   ├── TestimonialBlock.tsx
 │   ├── CtaBannerBlock.tsx
 │   ├── BlockRenderer/
 │   │   ├── index.tsx
-│   │   └── BlockRenderer.spec.tsx
+│   │   ├── BlockRenderer.spec.tsx
+│   │   └── BlockSkeleton.tsx  # Skeleton loading states
 │   └── TrackedButton/
 │       ├── index.tsx
 │       └── TrackedButton.spec.tsx
@@ -73,6 +76,12 @@ All content is driven by mock CMS data (`lib/mockCms.ts`), separating content fr
 
 The `BlockRenderer` component dynamically renders CMS blocks (Hero, FeatureGrid, Testimonial, CtaBanner) based on their type, with graceful handling of unknown block types.
 
+### Hero Block Features
+
+- Supports optional banner image (`bannerImage` prop) with Next.js Image optimization
+- Responsive design with mobile-first approach
+- Uses Next.js Image component for automatic image optimization
+
 ### Component Reuse
 
 - `BlockRenderer` used on Homepage and Features page
@@ -94,6 +103,14 @@ ISR provides a balance between performance and content freshness. SSG is used fo
 - Semantic HTML (`<main>`, `<section>`, proper headings)
 - Keyboard navigation support
 - MUI components include built-in accessibility features
+- Custom favicon (SVG icon) for brand consistency
+
+## ⏳ Loading States
+
+Skeleton loading states are implemented for better UX during data fetching:
+- `BlockRendererSkeleton` - Used on homepage with Hero, FeatureGrid, and Testimonial skeletons
+- `FeatureGridSkeleton` & `CtaBannerSkeleton` - Used on features page
+- All skeletons use MUI's Skeleton component with appropriate styling and responsive design
 
 ## 📊 Tracking & Analytics
 
@@ -138,17 +155,17 @@ MUI provides accessibility, responsive design, and theming out of the box. Theme
 
 ## 🚀 Future Improvements
 
-- Image optimization with Next.js Image component
 - Cookie-based UTM persistence
 - Open Graph and Twitter Card metadata
 - Structured data (JSON-LD)
-- Error boundaries and loading states
+- Error boundaries
 - E2E testing with Playwright/Cypress
 - Internationalization support
 
 ## 🧪 Testing
 
 Unit tests are located alongside their components using the `.spec.tsx` naming convention:
+- `components/blocks/HeroBlock/HeroBlock.spec.tsx`
 - `components/blocks/BlockRenderer/BlockRenderer.spec.tsx`
 - `components/blocks/TrackedButton/TrackedButton.spec.tsx`
 - `components/Header/Header.spec.tsx`

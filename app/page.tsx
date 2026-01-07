@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: page.seo.title,
-    description: page.seo.description,
+    description: page.seo.description || "Guesty helps property managers automate operations and grow their business.",
     ...(page.seo.canonical && {
       alternates: {
         canonical: page.seo.canonical,

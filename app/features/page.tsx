@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: page.seo.title,
-    description: page.seo.description,
+    description: page.seo.description || "Explore Guesty's automation, insights, and integrations.",
     ...(page.seo.canonical && {
       alternates: {
         canonical: page.seo.canonical,
