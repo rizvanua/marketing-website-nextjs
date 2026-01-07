@@ -3,6 +3,7 @@ import HeroBlock from "../HeroBlock";
 import FeatureGridBlock from "../FeatureGridBlock";
 import TestimonialBlock from "../TestimonialBlock";
 import CtaBannerBlock from "../CtaBannerBlock";
+import ArticleBlock from "../ArticleBlock";
 
 interface BlockRendererProps {
   blocks: CmsBlock[];
@@ -21,6 +22,8 @@ export default function BlockRenderer({ blocks }: BlockRendererProps) {
             return <TestimonialBlock key={index} block={block} />;
           case "ctaBanner":
             return <CtaBannerBlock key={index} block={block} />;
+          case "article":
+            return <ArticleBlock key={index} block={block} />;
           default:
             // Graceful handling of unknown block types
             if (typeof window === "undefined") {

@@ -39,6 +39,7 @@ export default function FeatureGridBlock({ block }: FeatureGridBlockProps) {
                 display: "flex",
                 flexDirection: "column",
                 boxShadow: 2,
+                backgroundColor: item.backgroundColor || "background.paper",
                 "&:hover": {
                   boxShadow: 4,
                 },

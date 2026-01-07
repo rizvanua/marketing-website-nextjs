@@ -33,6 +33,9 @@ app/                    # Next.js App Router pages
 ├── page.tsx           # Homepage (ISR)
 ├── features/          # Features page (ISR)
 ├── contact/           # Contact page (SSG)
+├── error.tsx          # Error boundary for page-level errors
+├── global-error.tsx   # Global error boundary
+├── not-found.tsx      # Custom 404 page
 └── ThemeRegistry.tsx  # MUI theme provider
 
 components/
@@ -43,6 +46,7 @@ components/
 │   ├── FeatureGridBlock.tsx
 │   ├── TestimonialBlock.tsx
 │   ├── CtaBannerBlock.tsx
+│   ├── ArticleBlock.tsx
 │   ├── BlockRenderer/
 │   │   ├── index.tsx
 │   │   ├── BlockRenderer.spec.tsx
@@ -74,7 +78,15 @@ All content is driven by mock CMS data (`lib/mockCms.ts`), separating content fr
 
 ### Block-Based Rendering
 
-The `BlockRenderer` component dynamically renders CMS blocks (Hero, FeatureGrid, Testimonial, CtaBanner) based on their type, with graceful handling of unknown block types.
+The `BlockRenderer` component dynamically renders CMS blocks (Hero, FeatureGrid, Testimonial, CtaBanner, Article) based on their type, with graceful handling of unknown block types.
+
+### CMS-Driven Content
+
+All content is driven by CMS data with no hardcoded strings in components:
+- Header logo alt text comes from CMS
+- Contact page title and labels come from CMS
+- All block content is CMS-driven
+- Site navigation and metadata are CMS-driven
 
 ### Hero Block Features
 
@@ -100,10 +112,11 @@ ISR provides a balance between performance and content freshness. SSG is used fo
 ## 🔍 SEO & Accessibility
 
 - Dynamic metadata from CMS data via `generateMetadata()`
-- Semantic HTML (`<main>`, `<section>`, proper headings)
+- Semantic HTML (`<main>`, `<section>`, `<article>`, proper headings)
 - Keyboard navigation support
 - MUI components include built-in accessibility features
 - Custom favicon (SVG icon) for brand consistency
+- All images have proper alt text (from CMS or fallback)
 
 ## ⏳ Loading States
 
@@ -153,12 +166,19 @@ export async function fetchCmsData(): Promise<CmsSiteData> {
 
 MUI provides accessibility, responsive design, and theming out of the box. Theme is configured in `app/ThemeRegistry.tsx`.
 
+## 🛡️ Error Handling & Fault Tolerance
+
+- **Error Boundaries**: `app/error.tsx` for page-level errors, `app/global-error.tsx` for root-level errors
+- **Custom 404 Page**: `app/not-found.tsx` with navigation back to homepage
+- **Graceful Degradation**: Unknown CMS block types are handled gracefully without crashing
+- **Null Checks**: All pages include null checks and error handling for missing CMS data
+- **Error Recovery**: Users can retry failed operations via error boundary UI
+
 ## 🚀 Future Improvements
 
 - Cookie-based UTM persistence
 - Open Graph and Twitter Card metadata
 - Structured data (JSON-LD)
-- Error boundaries
 - E2E testing with Playwright/Cypress
 - Internationalization support
 - Improve mobile version navigation menu
