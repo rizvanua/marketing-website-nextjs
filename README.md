@@ -117,6 +117,7 @@ ISR provides a balance between performance and content freshness. SSG is used fo
 - MUI components include built-in accessibility features
 - Custom favicon (SVG icon) for brand consistency
 - All images have proper alt text (from CMS or fallback)
+- Responsive navigation with hamburger menu on mobile devices
 
 ## ⏳ Loading States
 
@@ -134,6 +135,32 @@ The tracking system (`lib/tracking/index.ts`) currently logs to console. It's st
 - **Mixpanel**: Use `mixpanel.track()`
 
 UTM parameters (utm_source, utm_medium, utm_campaign) are automatically extracted from URLs and included in all tracking events.
+
+### Testing UTM Tags
+
+Add UTM parameters to any URL and check the browser console (DevTools → Console) for tracking logs:
+
+**Example URLs:**
+```bash
+http://localhost:3000/?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale
+http://localhost:3000/features?utm_source=facebook&utm_medium=social&utm_campaign=product_launch
+```
+
+**Expected console output:**
+```
+[track] page_view { path: '/', utm_source: 'google', utm_medium: 'cpc', utm_campaign: 'summer_sale' }
+[track] cta_click { cta_text: 'Request a demo', cta_href: '/contact', utm_source: 'google', ... }
+```
+
+**Test scenarios:**
+- All params: `?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale` → All appear in logs
+- Partial params: `?utm_source=facebook&utm_medium=social` → Only provided params appear
+- No params: `/` → UTM params are `undefined` in logs
+
+**Run unit tests:**
+```bash
+npm test -- lib/tracking/tracking.spec.ts
+```
 
 ## 🔌 Integration with Real CMS
 
@@ -181,7 +208,6 @@ MUI provides accessibility, responsive design, and theming out of the box. Theme
 - Structured data (JSON-LD)
 - E2E testing with Playwright/Cypress
 - Internationalization support
-- Improve mobile version navigation menu
 
 ## 🧪 Testing
 
