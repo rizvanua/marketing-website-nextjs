@@ -51,7 +51,7 @@ export default async function ContactPage() {
                 fontWeight: 600,
               }}
             >
-              Contact Us
+              {page.title}
             </Typography>
             <Typography
               variant="body1"
@@ -61,7 +61,7 @@ export default async function ContactPage() {
             </Typography>
             <Box>
               <Typography variant="h6" component="p" sx={{ mb: 1 }}>
-                Email:
+                {page.emailLabel}
               </Typography>
               <MuiLink
                 href={`mailto:${page.contactEmail}`}

@@ -33,7 +33,7 @@ export default function Header({ siteData }: HeaderProps) {
         >
           <Image
             src={siteData.logoUrl || "/assets/guesty-logo.svg"}
-            alt="Guesty Logo"
+            alt={siteData.logoAltText || `${siteData.name} Logo`}
             width={133}
             height={35}
             style={{ height: "32px", width: "auto" }}

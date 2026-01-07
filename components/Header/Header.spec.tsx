@@ -19,6 +19,7 @@ jest.mock('next/image', () => ({
 
 const mockSiteData: CmsSiteData['site'] = {
   name: 'Guesty',
+  logoAltText: 'Guesty Logo',
   navigation: [
     { label: 'Home', href: '/' },
     { label: 'Features', href: '/features' },
@@ -67,6 +68,18 @@ describe('Header', () => {
     render(<Header siteData={customSiteData} />);
     const logo = screen.getByAltText('Guesty Logo');
     expect(logo).toHaveAttribute('src', expect.stringContaining('custom-logo.svg'));
+  });
+
+  it('uses fallback alt text when logoAltText is not provided', () => {
+    const siteDataWithoutAlt: CmsSiteData['site'] = {
+      name: 'Test Company',
+      navigation: [
+        { label: 'Home', href: '/' },
+      ],
+    };
+    render(<Header siteData={siteDataWithoutAlt} />);
+    const logo = screen.getByAltText('Test Company Logo');
+    expect(logo).toBeInTheDocument();
   });
 });
 

@@ -42,6 +42,7 @@ export type CmsSiteData = {
   site: {
     name: string;
     logoUrl?: string;
+    logoAltText?: string;
     navigation: {
       label: string;
       href: string;
@@ -53,7 +54,9 @@ export type CmsSiteData = {
     contact: {
       slug: string;
       seo: CmsPage["seo"];
+      title: string;
       contactEmail: string;
+      emailLabel: string;
       description: string;
     };
   };
@@ -63,6 +66,7 @@ const MOCK_DATA: CmsSiteData = {
   site: {
     name: "Guesty",
     logoUrl: "/assets/guesty-logo.svg",
+    logoAltText: "Guesty Logo",
     navigation: [
       { label: "Home", href: "/" },
       { label: "Features", href: "/features" },
@@ -155,7 +159,9 @@ const MOCK_DATA: CmsSiteData = {
         title: "Contact Guesty",
         description: "Get in touch with the Guesty team to learn more.",
       },
+      title: "Contact Us",
       contactEmail: "sales@guesty.com",
+      emailLabel: "Email:",
       description:
         "Interested in learning how Guesty can help your business? Contact us.",
     },
