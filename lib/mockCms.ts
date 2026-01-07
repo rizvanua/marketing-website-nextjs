@@ -41,6 +41,7 @@ export type CmsPage = {
 export type CmsSiteData = {
   site: {
     name: string;
+    logoUrl?: string;
     navigation: {
       label: string;
       href: string;
@@ -61,6 +62,7 @@ export type CmsSiteData = {
 const MOCK_DATA: CmsSiteData = {
   site: {
     name: "Guesty",
+    logoUrl: "/assets/guesty-logo.svg",
     navigation: [
       { label: "Home", href: "/" },
       { label: "Features", href: "/features" },

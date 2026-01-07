@@ -37,7 +37,9 @@ export default function TrackedButton({
       color={color}
       size={size}
       onClick={handleClick}
-      sx={sx}
+      sx={{ ...sx, px: 4, "&:focus-visible": {
+        backgroundColor: "rgb(154, 0, 54)",
+      }}}
     >
       {text}
     </Button>

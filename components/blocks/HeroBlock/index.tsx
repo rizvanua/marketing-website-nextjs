@@ -1,7 +1,7 @@
 import { Container, Typography, Box } from "@mui/material";
 import Image from "next/image";
 import { CmsBlock } from "@/lib/mockCms";
-import TrackedButton from "./TrackedButton";
+import TrackedButton from "../TrackedButton";
 
 interface HeroBlockProps {
   block: Extract<CmsBlock, { type: "hero" }>;

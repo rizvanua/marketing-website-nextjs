@@ -12,6 +12,9 @@ interface HeaderProps {
 
 export default function Header({ siteData }: HeaderProps) {
   const pathname = usePathname();
+  if(!siteData) {
+    return null
+  }
 
   return (
     <AppBar position="static" color="default" elevation={1}>
@@ -29,7 +32,7 @@ export default function Header({ siteData }: HeaderProps) {
           }}
         >
           <Image
-            src="/assets/guesty-logo.svg"
+            src={siteData.logoUrl || "/assets/guesty-logo.svg"}
             alt="Guesty Logo"
             width={133}
             height={35}
@@ -49,9 +52,8 @@ export default function Header({ siteData }: HeaderProps) {
                 sx={{
                   fontWeight: isActive ? 600 : 400,
                   "&:focus-visible": {
-                    outline: "2px solid",
-                    outlineColor: "violet",
-                    outlineOffset: "2px",
+                    backgroundColor: "primary.main",
+                    color: "primary.contrastText",
                   },
                 }}
               >
