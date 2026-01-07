@@ -1,16 +1,26 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { unstable_cache } from "next/cache";
 import { fetchCmsData } from "@/lib/mockCms";
+import { CMS_TAGS } from "@/lib/mockCms";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import PageViewTracker from "@/components/PageViewTracker";
 import { FeatureGridSkeleton, CtaBannerSkeleton } from "@/components/blocks/BlockRenderer/BlockSkeleton";
 
-// ISR: Revalidate every 60 seconds
-export const revalidate = 60;
+// Tag-based revalidation instead of time-based
+// Revalidate on-demand using: revalidateTag('cms-features') or revalidateTag('cms-data')
+const getCachedCmsData = unstable_cache(
+  async () => fetchCmsData(),
+  ['cms-data'],
+  {
+    tags: [CMS_TAGS.ALL, CMS_TAGS.FEATURES],
+    revalidate: false, // No time-based revalidation, only tag-based
+  }
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const cmsData = await fetchCmsData();
+    const cmsData = await getCachedCmsData();
     const page = cmsData?.pages?.features;
 
     if (!page) {
@@ -37,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function FeaturesPage() {
   try {
-    const cmsData = await fetchCmsData();
+    const cmsData = await getCachedCmsData();
     const page = cmsData?.pages?.features;
 
     if (!page || !page.blocks || page.blocks.length === 0) {

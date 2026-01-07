@@ -1,16 +1,26 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { unstable_cache } from "next/cache";
 import { fetchCmsData } from "@/lib/mockCms";
+import { CMS_TAGS } from "@/lib/mockCms";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import PageViewTracker from "@/components/PageViewTracker";
 import { BlockRendererSkeleton } from "@/components/blocks/BlockRenderer/BlockSkeleton";
 
-// Revalidate every 60 seconds
-export const revalidate = 60;
+// Tag-based revalidation instead of time-based
+// Revalidate on-demand using: revalidateTag('cms-home') or revalidateTag('cms-data')
+const getCachedCmsData = unstable_cache(
+  async () => fetchCmsData(),
+  ['cms-data'],
+  {
+    tags: [CMS_TAGS.ALL, CMS_TAGS.HOME],
+    revalidate: false, // No time-based revalidation, only tag-based
+  }
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const cmsData = await fetchCmsData();
+    const cmsData = await getCachedCmsData();
     const page = cmsData?.pages?.home;
 
     if (!page) {
@@ -39,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const cmsData = await fetchCmsData();
+  const cmsData = await getCachedCmsData();
   const page = cmsData?.pages?.home;
 
   if (!page || !page.blocks || page.blocks.length === 0) {

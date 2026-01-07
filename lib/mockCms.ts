@@ -168,3 +168,14 @@ export async function fetchCmsData(): Promise<CmsSiteData> {
   return MOCK_DATA;
 }
 
+// Tag-based revalidation helper
+// Use this in API routes or server actions to revalidate specific pages
+// Example: revalidateTag('cms-data') or revalidateTag('cms-home')
+export const CMS_TAGS = {
+  ALL: 'cms-data',
+  HOME: 'cms-home',
+  FEATURES: 'cms-features',
+  CONTACT: 'cms-contact',
+  SITE: 'cms-site',
+} as const;
+

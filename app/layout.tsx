@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import "./globals.css";
 import ThemeRegistry from "./ThemeRegistry";
-import { fetchCmsData } from "@/lib/mockCms";
+import { fetchCmsData, CMS_TAGS } from "@/lib/mockCms";
 import LayoutWrapper from "@/components/LayoutWrapper";
+
+// Tag-based revalidation for site data
+const getCachedCmsData = unstable_cache(
+  async () => fetchCmsData(),
+  ['cms-data'],
+  {
+    tags: [CMS_TAGS.ALL, CMS_TAGS.SITE],
+    revalidate: false, // No time-based revalidation, only tag-based
+  }
+);
 
 export const metadata: Metadata = {
   title: {
@@ -19,10 +30,10 @@ export default async function RootLayout({
 }>) {
   let cmsData;
   try {
-    cmsData = await fetchCmsData();
+    cmsData = await getCachedCmsData();
   } catch (error) {
     console.error("Failed to fetch CMS data in layout:", error);
-    cmsData = await fetchCmsData();
+    cmsData = await getCachedCmsData();
   }
 
   const siteData = cmsData?.site;

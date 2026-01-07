@@ -1,12 +1,23 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { fetchCmsData } from "@/lib/mockCms";
+import { unstable_cache } from "next/cache";
+import { fetchCmsData, CMS_TAGS } from "@/lib/mockCms";
 import { Container, Typography, Box, Paper, Link as MuiLink } from "@mui/material";
 import PageViewTracker from "@/components/PageViewTracker";
 
+// Tag-based revalidation for contact page (SSG, but can be revalidated on-demand)
+const getCachedCmsData = unstable_cache(
+  async () => fetchCmsData(),
+  ['cms-data'],
+  {
+    tags: [CMS_TAGS.ALL, CMS_TAGS.CONTACT],
+    revalidate: false, // No time-based revalidation, only tag-based
+  }
+);
+
 export async function generateMetadata(): Promise<Metadata | undefined> {
   try {
-    const cmsData = await fetchCmsData();
+    const cmsData = await getCachedCmsData();
     const page = cmsData.pages.contact;
 
   return {
@@ -26,8 +37,7 @@ export async function generateMetadata(): Promise<Metadata | undefined> {
 
 
 export default async function ContactPage() {
-  
-  const cmsData = await fetchCmsData();
+  const cmsData = await getCachedCmsData();
   const page = cmsData?.pages?.contact;
 
   if (!page) {
