@@ -33,7 +33,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
         >
           <Image
             src={block.bannerImage}
-            alt=""
+            alt={block?.heading}
             fill
             style={{ objectFit: "cover" }}
             priority
