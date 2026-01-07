@@ -1,5 +1,5 @@
 import { Container, Typography, Box } from "@mui/material";
-import { Suspense } from "react";
+import Image from "next/image";
 import { CmsBlock } from "@/lib/mockCms";
 import TrackedButton from "./TrackedButton";
 
@@ -12,12 +12,35 @@ export default function HeroBlock({ block }: HeroBlockProps) {
     <Box
       component="section"
       sx={{
+        position: "relative",
         py: { xs: 8, md: 12 },
         backgroundColor: "primary.main",
         color: "primary.contrastText",
+        overflow: "hidden",
       }}
     >
-      <Container maxWidth="lg">
+      {block.bannerImage && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+            opacity: 0.2,
+          }}
+        >
+          <Image
+            src={block.bannerImage}
+            alt=""
+            fill
+            style={{ objectFit: "cover" }}
+            priority
+          />
+        </Box>
+      )}
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
         <Box
           sx={{
             textAlign: "center",

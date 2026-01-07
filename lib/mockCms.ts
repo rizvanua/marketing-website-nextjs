@@ -5,6 +5,7 @@ export type CmsBlock =
       subheading: string;
       ctaText: string;
       ctaHref: string;
+      bannerImage?: string;
     }
   | {
       type: "featureGrid";
@@ -81,6 +82,7 @@ const MOCK_DATA: CmsSiteData = {
           subheading:
             "Guesty helps property managers automate workflows and scale operations.",
           ctaText: "Request a demo",
+          bannerImage: "/assets/hero-banner.webp",
           ctaHref: "/contact",
         },
         {
