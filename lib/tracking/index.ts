@@ -3,6 +3,8 @@
  * Simulates sending data to GTM / GA / Mixpanel
  */
 
+import type { ReadonlyURLSearchParams } from "next/navigation";
+
 export interface TrackingPayload {
   [key: string]: unknown;
   utm_source?: string;
@@ -12,8 +14,11 @@ export interface TrackingPayload {
 
 /**
  * Extracts UTM parameters from URL search params
+ * Accepts both URLSearchParams and ReadonlyURLSearchParams (from Next.js)
  */
-export function extractUtmParams(searchParams: URLSearchParams): {
+export function extractUtmParams(
+  searchParams: URLSearchParams | ReadonlyURLSearchParams
+): {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
@@ -51,7 +56,7 @@ export function track(
  */
 export function trackPageView(
   path: string,
-  searchParams?: URLSearchParams
+  searchParams?: URLSearchParams | ReadonlyURLSearchParams
 ): void {
   const utmParams = searchParams ? extractUtmParams(searchParams) : {};
   track("page_view", {
@@ -66,7 +71,7 @@ export function trackPageView(
 export function trackCtaClick(
   ctaText: string,
   ctaHref: string,
-  searchParams?: URLSearchParams
+  searchParams?: URLSearchParams | ReadonlyURLSearchParams
 ): void {
   const utmParams = searchParams ? extractUtmParams(searchParams) : {};
   track("cta_click", {

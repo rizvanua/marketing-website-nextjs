@@ -18,6 +18,13 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the site.
 
+### Running Tests
+
+```bash
+npm test
+npm run test:watch  # Watch mode
+```
+
 ## 📁 Project Structure
 
 ```
@@ -34,14 +41,26 @@ components/
 │   ├── FeatureGridBlock.tsx
 │   ├── TestimonialBlock.tsx
 │   ├── CtaBannerBlock.tsx
-│   └── BlockRenderer.tsx
-├── Header.tsx         # Navigation header
-├── Footer.tsx         # Site footer
-└── PageViewTracker.tsx # Analytics tracking
+│   ├── BlockRenderer/
+│   │   ├── index.tsx
+│   │   └── BlockRenderer.spec.tsx
+│   └── TrackedButton/
+│       ├── index.tsx
+│       └── TrackedButton.spec.tsx
+├── Header/
+│   ├── index.tsx
+│   └── Header.spec.tsx
+├── Footer/
+│   ├── index.tsx
+│   └── Footer.spec.tsx
+├── LayoutWrapper.tsx
+└── PageViewTracker.tsx
 
 lib/
 ├── mockCms.ts         # Mock CMS data & types
-└── tracking.ts        # Analytics utilities
+└── tracking/
+    ├── index.ts
+    └── tracking.spec.ts
 ```
 
 ## 🏗️ Key Architectural Decisions
@@ -78,7 +97,7 @@ ISR provides a balance between performance and content freshness. SSG is used fo
 
 ## 📊 Tracking & Analytics
 
-The tracking system (`lib/tracking.ts`) currently logs to console. It's structured to easily integrate with:
+The tracking system (`lib/tracking/index.ts`) currently logs to console. It's structured to easily integrate with:
 
 - **Google Tag Manager**: Push to `window.dataLayer`
 - **Google Analytics 4**: Call `window.gtag()`
@@ -126,6 +145,17 @@ MUI provides accessibility, responsive design, and theming out of the box. Theme
 - Error boundaries and loading states
 - E2E testing with Playwright/Cypress
 - Internationalization support
+
+## 🧪 Testing
+
+Unit tests are located alongside their components using the `.spec.tsx` naming convention:
+- `components/blocks/BlockRenderer/BlockRenderer.spec.tsx`
+- `components/blocks/TrackedButton/TrackedButton.spec.tsx`
+- `components/Header/Header.spec.tsx`
+- `components/Footer/Footer.spec.tsx`
+- `lib/tracking/tracking.spec.ts`
+
+Run tests with `npm test` or `npm run test:watch` for watch mode.
 
 ## 📝 Notes
 

@@ -1,8 +1,8 @@
 import { CmsBlock } from "@/lib/mockCms";
-import HeroBlock from "./HeroBlock";
-import FeatureGridBlock from "./FeatureGridBlock";
-import TestimonialBlock from "./TestimonialBlock";
-import CtaBannerBlock from "./CtaBannerBlock";
+import HeroBlock from "../HeroBlock";
+import FeatureGridBlock from "../FeatureGridBlock";
+import TestimonialBlock from "../TestimonialBlock";
+import CtaBannerBlock from "../CtaBannerBlock";
 
 interface BlockRendererProps {
   blocks: CmsBlock[];

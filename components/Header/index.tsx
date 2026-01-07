@@ -40,6 +40,11 @@ export default function Header({ siteData }: HeaderProps) {
                 color={isActive ? "primary" : "inherit"}
                 sx={{
                   fontWeight: isActive ? 600 : 400,
+                  "&:focus-visible": {
+                    outline: "2px solid",
+                    outlineColor: "violet",
+                    outlineOffset: "2px",
+                  },
                 }}
               >
                 {navItem.label}
